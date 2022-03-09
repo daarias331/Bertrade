@@ -1,0 +1,9 @@
+1. Created IAM
+2. Created service account
+3. Enable Cloud Firestore API
+4. This is all BS
+5. Just go to the project in Firebase console
+6. Select project
+7. Project Settings (top left)
+8. Service Accounts
+9. Generate new private key
