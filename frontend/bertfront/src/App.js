@@ -13,17 +13,26 @@ const theme = createTheme({
     },
     secondary: {
       main: '#12C243',
+      text: 'white',
     },
+    box: {
+      main: '#311442', 
+      special: "linear-gradient(45deg, #394F98, #690A73, #A8563B)",
+    },
+    text: {
+      main: '#FFFFFF'
+    }
+    
   }
 });
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{backgroundColor: '#532C6A'}}>
       <ThemeProvider theme={theme}>
-        <Container>
-          <Box sx={{witdh: 900, height: 620, backgroundColor: '#532C6A', borderRadius: "5px"}}>
-            <Typography variant="h3" sx={{color: '#12C243', fontWeight: 'bold'}}>
+        <Container maxWidth="md" >
+          
+            <Typography variant="h3" sx={{color: 'secondary.main', fontWeight: 'bold', textAlign: "right"}}>
               BERTRADE
             </Typography>
 
@@ -31,7 +40,7 @@ function App() {
               <Route exact path="/" element={<Simulator />}/>
               <Route path="/howitworks" element={<Card />}/>
             </Routes>
-          </Box>
+          
         </Container>      
       </ThemeProvider>
     </div>
