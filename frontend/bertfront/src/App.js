@@ -28,9 +28,9 @@ const theme = createTheme({
 
 function App() {
   return (
-    <div className="App" style={{backgroundColor: '#532C6A'}}>
+    <div className="App" style={{backgroundColor: '#532C6A', height: "100%"}}>
       <ThemeProvider theme={theme}>
-        <Container maxWidth="md" >
+        <Container sx={{ flexGrow: 1 }}>
           
             <Typography variant="h3" sx={{color: 'secondary.main', fontWeight: 'bold', textAlign: "right"}}>
               BERTRADE
