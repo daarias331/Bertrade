@@ -21,6 +21,9 @@ const theme = createTheme({
     },
     text: {
       main: '#FFFFFF'
+    },
+    profit: {
+      main: '#C18B00'
     }
     
   }

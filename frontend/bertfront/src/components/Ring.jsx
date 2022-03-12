@@ -42,8 +42,6 @@ function Ring() {
     
         return gradient;
     }
-
-    const donutColor = [['red','gray','blue'],['rgba(255,100,100,20)','rgba(255,100,100,20)','rgba(255,100,100,20)']]
   
     useEffect(() => {
       const chart = chartRef.current;
@@ -67,7 +65,9 @@ function Ring() {
     
     return ( 
         <Doughnut ref={chartRef}
-            data={chartData}/>
+            data={chartData} options={{        
+              cutout: 55}
+          }/>
     );
 }
   
