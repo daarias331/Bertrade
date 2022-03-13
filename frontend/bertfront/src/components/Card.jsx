@@ -12,10 +12,8 @@ function Card() {
         nav("/");
     }
 
-    const handleCreator= (name) => {
-        if(name=="pippo"){
-            window.open("https://www.linkedin.com/in/felipe-ramos-datasc1/", '_blank')
-        }
+    const handleCreator = (link) => {
+        window.open(link, '_blank');
     }
 
     return ( 
@@ -70,7 +68,8 @@ function Card() {
                     <Typography variant="h5" sx={{color: 'secondary.text', fontWeight: 'bold', textAlign: "left", margin: "20px 0px 0px 20px"}}>
                         Alex Arias
                     </Typography>
-                    <Button variant="text" sx={{color: 'secondary.text', float: "left", margin: "0px 0px 0px 20px"}}>
+                    <Button variant="text" sx={{color: 'secondary.text', float: "left", margin: "0px 0px 0px 20px"}}
+                    onClick={() => handleCreator("")}>
                         >>LinkedIn
                     </Button>
                     </Grid>
@@ -95,7 +94,8 @@ function Card() {
                         <Typography variant="h5" sx={{color: 'secondary.text', fontWeight: 'bold', textAlign: "left", margin: "20px 0px 0px 20px"}}>
                             Felipe Ramos
                         </Typography>
-                        <Button variant="text" sx={{color: 'secondary.text', float: "left", margin: "0px 0px 0px 20px"}} onClick={handleCreator("pippo")}>
+                        <Button variant="text" sx={{color: 'secondary.text', float: "left", margin: "0px 0px 0px 20px"}} 
+                        onClick={() => handleCreator("https://www.linkedin.com/in/felipe-ramos-datasc1/")}>
                         >>LinkedIn
                         </Button>
                     </Grid>
