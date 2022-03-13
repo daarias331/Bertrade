@@ -25,17 +25,31 @@ const options = {
     responsive: true,
     plugins: {
         legend: {
-        position: 'bottom',
-        display: false,
-        labels: {color: 'white'}
+            position: 'bottom',
+            display: false,
         },
         title: {
-        display: true,
-        text: 'Accumulative profit',
-        position: 'bottom'
+            display: true,
+            text: 'Accumulative profit',
+            position: 'bottom',
+            color: "white"
         },
+        
     },
- 
+    scales: {
+        y: {
+            ticks: {color: "#FFFFFF"},
+            grid: {color: "rgba(255,255,255,0.25)", 
+            borderColor: "white"
+        }
+        },
+        x: {
+            ticks: {color: "white"},
+            grid: {display: false,
+                borderColor: "white"
+            }
+        }
+    }
 };
 
 const data = {

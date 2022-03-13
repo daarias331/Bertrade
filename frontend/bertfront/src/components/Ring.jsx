@@ -18,16 +18,19 @@ ChartJS.register(
     Legend
 );
 
-const error = 35;
 
-const data = {datasets: [{
-    label: 'Error rate',
-    data: [error,100-error], 
-    borderColor: ['rgba(255, 99, 132, 0)','rgba(255, 99, 132, 0)'],
-    }]
-}
 
-function Ring() {
+function Ring({rate}) {
+
+    const error = rate;
+
+    const data = {datasets: [{
+        label: 'Error rate',
+        data: [error,100-error], 
+        borderColor: ['rgba(255, 99, 132, 0)','rgba(255, 99, 132, 0)'],
+        }]
+    }
+
     const chartRef = useRef(null);
     const [chartData, setChartData] = useState({
       datasets: [],
@@ -66,8 +69,8 @@ function Ring() {
     return ( 
         <Doughnut ref={chartRef}
             data={chartData} options={{        
-              cutout: 55}
-          }/>
+              cutout: 55}} style={{position: "absolute", left: "40%", top: "1%"}} 
+              />
     );
 }
   

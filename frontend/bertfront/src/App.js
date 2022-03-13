@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="App" style={{backgroundColor: '#532C6A', height: "100%"}}>
       <ThemeProvider theme={theme}>
-        <Container sx={{ flexGrow: 1 }}>
+        <Container>
           
             <Typography variant="h3" sx={{color: 'secondary.main', fontWeight: 'bold', textAlign: "right"}}>
               BERTRADE

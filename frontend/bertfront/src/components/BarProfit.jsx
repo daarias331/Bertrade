@@ -28,17 +28,32 @@ const data = {
         backgroundColor: '#E1A201',
       }]}
 
-const options = {plugins: {
-    legend: {
-        display: false,
-        position: 'bottom'
-    },
-    title: {
-        display: true,
-        text: 'Profit by Operation',
-        position: 'bottom'
-      }
-    }}
+const options = {
+    plugins: {
+        legend: {
+            display: false,
+            position: 'bottom',
+            labels: {color: "white"}
+            },
+        title: {
+            display: true,
+            text: 'Profit by Operation',
+            position: 'bottom',
+            color: "white"
+            }
+        },
+    scales: {
+        y: {
+           ticks: { color: "white"},
+           grid: {color: "rgba(255,255,255,0.25)", borderColor: "white"}
+        },
+        x: {
+            ticks: { color: "white"},
+            grid: {color: "rgba(0,0,0,0)", borderColor: "white"}
+        }
+
+    }
+}
 
 function BarProfit() {
     return ( <Bar data={data} options={options}/> );

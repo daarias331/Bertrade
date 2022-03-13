@@ -26,13 +26,25 @@ const options = {
     plugins: {
         legend: {
         position: 'bottom',
+        labels: {color: "white"}
         },
         title: {
         display: true,
         text: 'Predicted vs Actual price',
-        position: 'bottom'
+        position: 'bottom',
+        color: "white"
         },
     },
+    scales: {
+        y: {
+            ticks: {color: "white"},
+            grid: {color: "rgba(255,255,255,0.25)", borderColor: "white"}
+        },
+        x: {
+            ticks: {color: "white"},
+            grid: {color: "rgba(0,0,0,0)", borderColor: "white"}
+        }
+    }
 };
 
 const data = {
