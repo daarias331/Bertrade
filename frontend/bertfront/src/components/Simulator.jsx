@@ -101,8 +101,8 @@ function Simulator() {
                         variant="outlined" color="text" focused sx={{backgroundColor: 'primary', border: "5px", margin: "20px", input: { color: 'text.main' }}}/>
                     
                         <TextField id="outlined-basic" label="Select period" type="date" defaultValue="2020-05-24"
-                        variant="outlined" color="text" focused sx={{backgroundColor: 'primary', border: "5px", margin: "30px 20px 30px 20px", input: { color: 'text.main' }}}/>
-                        
+                        variant="outlined" color="text" focused sx={{backgroundColor: 'primary', border: "5px", margin: "30px 20px 30px 20px", 
+                        input: { color: 'text.main' }, '& input[type="date"]::-webkit-calendar-picker-indicator': {filter: 'invert(100%)'}}}/>
                         
                     </div>
                     <div>

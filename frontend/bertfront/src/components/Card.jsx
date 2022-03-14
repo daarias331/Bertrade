@@ -69,7 +69,7 @@ function Card() {
                         Alex Arias
                     </Typography>
                     <Button variant="text" sx={{color: 'secondary.text', float: "left", margin: "0px 0px 0px 20px"}}
-                    onClick={() => handleCreator("")}>
+                    onClick={() => handleCreator("https://www.linkedin.com/in/alejandro-arias1/")}>
                         >>LinkedIn
                     </Button>
                     </Grid>
