@@ -17,6 +17,12 @@ import string
 from collections import defaultdict
 import numpy as np
 
+## IMPORTS FOR TORCH MODEL
+import torch
+from torch.utils.data import Dataset
+from transformers import BertTokenizer
+from torch.utils.data import DataLoader
+
 def download_tweets(start_date, query, max_results=300):
 
     end_date=datetime.strptime(start_date, "%Y-%m-%d")+ timedelta(days=1)
@@ -139,15 +145,20 @@ def clean_data(DF):
     return df_clean
 
 
-df_tweets=download_tweets('2022-03-08',"$SPX")
-
-df_tweets=clean_data(df_tweets)
-
-tweets_json=df_tweets.to_dict(orient = 'records')[0]
 
 
-print(type(tweets_json))
-print(tweets_json)
+if __name__ == '__main__':
+    df_tweets=download_tweets('2022-03-08',"$SPX")
+
+    df_tweets=clean_data(df_tweets)
+
+    tweets_json=df_tweets.to_dict(orient = 'records')[0]
+
+    print(type(tweets_json))
+    print(tweets_json)
+
+
+
 
 #df_tweets.to_csv("prueba_spx.csv",index=False)
 

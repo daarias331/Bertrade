@@ -1,3 +1,5 @@
+from importlib.resources import path
+from random import sample
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
@@ -25,7 +27,35 @@ tweets_json=df_tweets.to_dict(orient = 'records')[0]
 
 tweets_json["Date"]=tweets_json["Date"].strftime("%Y-%m-%d")
 
+
+###ADDING A DOCUMENT    
+#doc_ref = db.collection(u'trial').document(u'date1')
+
+
+#QUERYING A DOCUMENT
 doc_ref = db.collection(u'trial').document(u'date1')
 
+doc = doc_ref.get()
 
-doc_ref.set(tweets_json)
+sample=None
+if doc.exists:
+    sample=doc.to_dict()
+    print(f'Document data: {sample}')
+else:
+    print(u'No such document!')
+
+
+### PREDICTING
+
+import direction_model
+
+path="C:\\Users\\Alex\\Caps\\capstone\\Experiments\\Bin_by_date\\SPX_NOT freeze\\model_SPX_shift_ready_bin_byDate_ep14.dat"
+model=direction_model.load_model(path)
+
+data_loader=direction_model.load_data(sample)
+
+pred=direction_model.predict(model,data_loader,direction_model.device)
+
+print(pred)
+
+#doc_ref.set(tweets_json)
