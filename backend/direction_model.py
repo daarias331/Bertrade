@@ -14,7 +14,9 @@ class TDataset(Dataset):
     def __init__(self, data, maxlen):
 
         #Store the contents of the data (coming in json format) in a pandas dataframe
-        data_df=pd.DataFrame.from_records([data])
+        data_df=data
+
+        print('data df: ',data_df)
 
         self.df = data_df
 

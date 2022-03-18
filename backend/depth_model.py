@@ -15,6 +15,11 @@ def download_hourly_price(ticker,day):
 
 
 def generate_ATRP(DF, wind=14):
+    '''
+    Generates ATRP indicator with the specified window.
+
+    Returns ATRP in percentage (no need to multiply by 100)
+    '''
     df=DF.copy()
     
     atr_i=AverageTrueRange(high=df.High, low=df.Low, close=df['Adj Close'],window=wind)
