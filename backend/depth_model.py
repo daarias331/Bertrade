@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from torch import load
+#from torch import load
 import yfinance as yf
 from datetime import datetime
 from datetime import timedelta
@@ -8,10 +8,10 @@ from datetime import timedelta
 from ta.volatility import AverageTrueRange
 from xgboost import XGBRegressor
 
-def download_hourly_price(ticker,day):
-    start = datetime.strptime(day, "%Y-%m-%d")- timedelta(days=10)#- timedelta(days=1)
+def download_hourly_data(ticker,day):
+    start = datetime.strptime(day, "%Y-%m-%d")- timedelta(days=20)#- timedelta(days=1)
     end = datetime.strptime(day, "%Y-%m-%d")+ timedelta(days=2)
-    return yf.download(ticker,start,end, interval='1h')
+    return yf.download(ticker,start,end, '1h')
 
 
 def generate_ATRP(DF, wind=14):
@@ -30,8 +30,8 @@ def generate_ATRP(DF, wind=14):
 
 def average_hourly_ATRP(DF):
     df=DF.copy()
-    df['datetime']=pd.to_datetime(df.index,utc=True)
-    df['Date']=df.datetime.dt.date #Transform datetime into date
+    #df['datetime']=pd.to_datetime(df.index,utc=True)
+    #df['Date']=df.datetime.dt.date #Transform datetime into date
     grouped=df.groupby('Date')
     return grouped
 
@@ -54,7 +54,7 @@ def preprocess_sample(ticker,day):
     day_str=day
     #day_date=datetime.strptime(day, "%Y-%m-%d").dt.date
     
-    hourly_df=download_hourly_price(ticker,day_str) #Downloads hourly data
+    hourly_df=download_hourly_data(ticker,day_str) #Downloads hourly data
     hourly_df=generate_ATRP(hourly_df,wind=14) #Generates ATRP indicator on hourly data
     day_grouped_df=average_hourly_ATRP(hourly_df).mean() #Groups by day and takes the average of ATRP
     X_df=generate_window(day_grouped_df,0,6) # Generates df with features where each features is an ATRP correpsonding to a period in time

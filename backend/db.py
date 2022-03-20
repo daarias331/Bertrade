@@ -136,20 +136,36 @@ def add_holidays(db,path_holiday):
         })
 
 #add_holidays(db,'C:\\Users\\Alex\Ghub\\holidays_2022.csv')  # Uncomment this if want to add new holidays
-pdate=determine_predictor_date(db,'2022-04-21')
+
+def get_true_close(ticker,day):
+    '''Adds the closing price of the day t-1 to the DB 
+    Keyword arguments:
+    day -- string indicating the date we want to update the closing price for
+    '''
+    start=datetime.strptime(day, "%Y-%m-%d")+timedelta(days=1) # Adds one day to the day we want to know. Don't overthink it, it's just a constrain from yfinance
+    end=start+timedelta(days=1) # Adds one more day (two days in total from the day we want to know). Don't overthink it, it's just a constrain from yfinance
+    
+    df=depth_model.yf.download(ticker,start,end,'1d')
+
+    adj_close_last=df.loc[day,'Adj Close']
+
+    return adj_close_last
+       
 
 if __name__ == '__main__':
 
-    predicted_date='2022-03-07'
+    predicted_date='2022-03-09'
     predictor_day_str=determine_predictor_date(db,predicted_date)
     print(f'Predictor date is: {predictor_day_str}')
 
+    
     ## Block to predict the direction of the price
     df_tweets=pipeline.download_tweets(predictor_day_str,"$SPX")
     sample=pipeline.clean_data(df_tweets)
     model_direction=direction_model.load_model(path_bert)
     data_loader=direction_model.load_data(sample)
     direction_pred=direction_model.predict(model_direction,data_loader,direction_model.device)
+    direction_pred_num = 1 if direction_pred=='up' else -1
 
     ## Block to predict the depth of the price movement
     df_price=depth_model.preprocess_sample("^GSPC",predictor_day_str)
@@ -157,13 +173,25 @@ if __name__ == '__main__':
     fv = np.array(df_price).reshape((1,-1))
     depth_pred=float(model_depth.predict(fv).squeeze())
 
+    prev_close=get_true_close('^GSPC',predictor_day_str)
+    pred_price=prev_close*(1+(depth_pred*direction_pred_num/100))
     
     # Pushing the data onto the DB
     data_prediction={
-        u'predictor date': predictor_day_str,
-        u'predicted date': predicted_date,
-        u'predicted direction': direction_pred,
-        u'predicted depth': depth_pred
+        u'predictor_date': predictor_day_str,
+        u'predicted_date': predicted_date,
+        u'predicted_direction': direction_pred,
+        u'predicted_depth': depth_pred,
+        u'predicted_price': pred_price
     }
 
     db.collection(u'predictions').add(data_prediction)
+    
+
+    ## Adds the actual closing price of the previous day
+    prev_ref=db.collection(u'predictions').where(u'predicted_date',u'==',predictor_day_str).get()[0] #Gets the document where we had made a predicion for previous day (predictor_day)
+
+    db.collection(u'predictions').document(prev_ref.id).set({
+        u'actual close':prev_close
+    }, merge=True )
+    
