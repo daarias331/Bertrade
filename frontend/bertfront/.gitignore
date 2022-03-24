@@ -6,7 +6,7 @@
 .pnp.js
 
 #keys
-key_bertrade.json
+/src/key_bertrade.json
 
 # testing
 /coverage

@@ -6,6 +6,17 @@ import BarProfit from './BarProfit';
 import LinePredict from './LinePredict';
 import AccumProfit from './AccumProfit';
 import InputAdornment from '@mui/material/InputAdornment';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import key_bertrade from '../key_bertrade.json';
+
+// import { } from 'firebase/<service>';
+
+// TODO: Replace the following with your app's Firebase project configuration
+const firebaseConfig = key_bertrade;
+
+//const app = initializeApp(firebaseConfig);
+//const db = getFirestore(app);
 
 //import DateAdapter from '@mui/lab/AdapterLuxon';
 
@@ -16,10 +27,25 @@ function Simulator() {
     const [predicted, setPredicted] = useState('no data');
     const [netProfit, setNetProfit] = useState(0.0);
     const [error, setError] = useState(35);
+    const [initDate, setInitDate] = useState("");
+    const [initAmount, setInitAmount] = useState("");
+
     let nav = useNavigate();
 
     const handleCredits = () => {
         nav("/howitworks");
+    }
+
+    const handleQuery = async () => {
+        console.log(initAmount, initDate);
+        try {
+            //const data = await fetch();
+        } catch(error) {
+            alert(error);
+        } finally {
+
+        }
+
     }
 
     return (
@@ -91,8 +117,8 @@ function Simulator() {
                         <Typography variant="h5" sx={{color: 'secondary.main', fontWeight: 'bold'}}>
                             Simulation
                         </Typography>
-    
-                        <TextField id="outlined-basic" label="Starting amount ($USD)" InputProps={{
+                        
+                        <TextField id="outlined-basic" label="Starting amount ($USD)" onChange={(e)=>setInitAmount(e.target.value)} InputProps={{
                             startAdornment: <InputAdornment position="start">
                                 <Typography sx={{color: 'secondary.text'}}>$
                                     </Typography>
@@ -100,13 +126,13 @@ function Simulator() {
                             }}
                         variant="outlined" color="text" focused sx={{backgroundColor: 'primary', border: "5px", margin: "20px", input: { color: 'text.main' }}}/>
                     
-                        <TextField id="outlined-basic" label="Select period" type="date" defaultValue="2020-05-24"
+                        <TextField id="outlined-basic" label="Select period" type="date" defaultValue="2020-05-24" onChange={(e)=>{setInitDate(e.target.value)}}
                         variant="outlined" color="text" focused sx={{backgroundColor: 'primary', border: "5px", margin: "30px 20px 30px 20px", 
                         input: { color: 'text.main' }, '& input[type="date"]::-webkit-calendar-picker-indicator': {filter: 'invert(100%)'}}}/>
                         
                     </div>
                     <div>
-                        <Button variant="contained" color='secondary' 
+                        <Button variant="contained" color='secondary' onClick={()=>handleQuery()}
                         sx={{color: "secondary.text", float: "centre"}}>Simulate!</Button>
                     </div>
                 </Grid>
