@@ -19,14 +19,7 @@ ChartJS.register(
     Legend
   );
 
-const data = {
-    labels: ['Buy','Sell'],
-    datasets: [
-      {
-        label: 'Profit by Operations',
-        data: [2,10],
-        backgroundColor: '#E1A201',
-      }]}
+
 
 const options = {
     plugins: {
@@ -55,7 +48,19 @@ const options = {
     }
 }
 
-function BarProfit() {
+function BarProfit({simData}) {
+    
+    let series = Object.keys(simData).length == 0 ? [2,10] : simData.operationProfit;
+    
+    const data = {
+        labels: ['Buy','Sell'],
+        datasets: [
+          {
+            label: 'Profit by Operations',
+            data: series,
+            backgroundColor: '#E1A201',
+          }]}
+
     return ( <Bar data={data} options={options}/> );
 }
 

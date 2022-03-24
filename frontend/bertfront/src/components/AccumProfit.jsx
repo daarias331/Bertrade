@@ -52,19 +52,22 @@ const options = {
     }
 };
 
-const data = {
-    labels: [1,2,3,4,5,6,7,8,9,10],
-    datasets: [
-      {
-        label: 'Actual',
-        data: [0,1,1,2,3,4,7,8,7,10],
-        borderColor: '#C18B00',
-        backgroundColor: '#C18B00',
-      },
-    ],
-};
 
-function AccumProfit() {
+
+function AccumProfit({simData}) {
+
+    const data = {
+        labels: [1,2,3,4,5,6,7,8,9,10],
+        datasets: [
+          {
+            label: 'Actual',
+            data: [0,1,1,2,3,4,7,8,7,10],
+            borderColor: '#C18B00',
+            backgroundColor: '#C18B00',
+          },
+        ],
+    };
+
     return ( <Line options={options} data={data} /> );
 }
 

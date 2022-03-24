@@ -27,8 +27,9 @@ function Simulator() {
     const [predicted, setPredicted] = useState('no data');
     const [netProfit, setNetProfit] = useState(0.0);
     const [error, setError] = useState(35);
-    const [initDate, setInitDate] = useState("");
-    const [initAmount, setInitAmount] = useState("");
+    const [initDate, setInitDate] = useState("2020-05-24");
+    const [initAmount, setInitAmount] = useState("1000");
+    const [simData, setSimData] = useState({});
 
     let nav = useNavigate();
 
@@ -36,10 +37,26 @@ function Simulator() {
         nav("/howitworks");
     }
 
+    const handleTopData = () => {
+        try {
+            //const top = await queryfirebase();
+            //setActual(top.actual);
+            //setPredicted(top.predicted);
+            //setError(top.error);
+        } catch(error){
+
+        } finally {
+
+        }
+    }
+
     const handleQuery = async () => {
         console.log(initAmount, initDate);
+        const query = `${initAmount} ${initDate}`;
         try {
-            //const data = await fetch();
+            //const data = await firebase(query);
+            //setNetProfit(data.profit.sum());
+            
         } catch(error) {
             alert(error);
         } finally {
@@ -141,18 +158,18 @@ function Simulator() {
                     borderRadius: "5px", margin: "10px", padding: "16px", boxShadow: 4}}>
                     <Grid item xs={1}></Grid>
                     <Grid item xs={10} sx={{margin: "15px"}}>
-                        <LinePredict />
+                        <LinePredict simData={simData}/>
                     </Grid>
                     <Grid item xs={3}></Grid>
                     <Grid item xs={7}>
-                        <BarProfit />
+                        <BarProfit simData={simData}/>
                     </Grid>
                     
                 </Grid>
 
                 <Grid item xs={4} sx={{height: 370, backgroundImage: "linear-gradient(45deg, #394F98, #690A73 50%, #A8563B)", 
                     borderRadius: "5px", margin: "10px", padding: "16px", boxShadow: 4}}>
-                    <AccumProfit />
+                    <AccumProfit simData={simData} />
                     <Box sx={{position: "relative", top: "20%"}}>
                         <Typography variant='h5' color='secondary.text' sx={{fontWeight: 'bold',display: 'inline'}}>
                             Net profit: $

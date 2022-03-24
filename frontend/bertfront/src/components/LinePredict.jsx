@@ -47,7 +47,11 @@ const options = {
     }
 };
 
-const data = {
+
+
+function LinePredict({simData}) {
+
+  const data = {
     labels: [1,2,3,4,5,6,7,8,9],
     datasets: [
       {
@@ -65,7 +69,6 @@ const data = {
     ],
 };
 
-function LinePredict() {
     return ( <Line options={options} data={data} /> );
 }
 
