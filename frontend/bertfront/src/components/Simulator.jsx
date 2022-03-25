@@ -15,14 +15,12 @@ import key_bertrade from '../key_bertrade.json';
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = key_bertrade;
 
-//const app = initializeApp(firebaseConfig);
-//const db = getFirestore(app);
-
-//import DateAdapter from '@mui/lab/AdapterLuxon';
-
-
 function Simulator() {
 
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+   
     const [actual, setActual] = useState('no data');
     const [predicted, setPredicted] = useState('no data');
     const [netProfit, setNetProfit] = useState(0.0);
@@ -39,6 +37,7 @@ function Simulator() {
 
     const handleTopData = () => {
         try {
+            const todays = db.collection('predictions').where("","","");
             //const top = await queryfirebase();
             //setActual(top.actual);
             //setPredicted(top.predicted);
