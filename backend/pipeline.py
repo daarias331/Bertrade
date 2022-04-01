@@ -20,17 +20,20 @@ import numpy as np
 ## IMPORTS FOR TORCH MODEL
 import torch
 from torch.utils.data import Dataset
-from transformers import BertTokenizer
+from transformers import BertTokenizer  
 from torch.utils.data import DataLoader
 
 def download_tweets(start_date, query, max_results=300):
 
     end_date=datetime.strptime(start_date, "%Y-%m-%d")+ timedelta(days=1)
+    end_date_str=datetime.strftime(end_date,"%Y-%m-%d")
 
     tweets_list = []
     data_df=pd.DataFrame(columns=['Date', 'text'])
     try:
-        for i,tweet in enumerate(sntwitter.TwitterSearchScraper(f'{query} since:{start_date} until:{str(end_date)}').get_items()):
+        tweets_scrapped=sntwitter.TwitterSearchScraper(f'{query} since:{start_date} until:{end_date_str}').get_items()
+        for i,tweet in enumerate(tweets_scrapped):
+            
             if i>max_results:
                 break
             content_no_comma=str(tweet.content).replace(',',' ') #Removes commas to not interfere in the CSV structure
@@ -39,8 +42,11 @@ def download_tweets(start_date, query, max_results=300):
             tweet_datetime=datetime.strptime(tweet_date_format,'%Y-%m-%d %H:%M:%S+00:00') #Transforms into datetime
             tweet_date=datetime.date(tweet_datetime) #transforms into date
             tweets_list.append([tweet_date, content_no_comma])
-    except:
-        print("Exception on tweet:",i, "from date:", start_date,"\n")
+        
+        
+    except Exception as e:
+        #print("Exception on tweet:",i, "from date:", start_date,"\n")
+        print('el error es:', str(e))
     
     data_df=pd.concat([data_df,pd.DataFrame(tweets_list ,columns=['Date', 'text'])])
 
@@ -117,7 +123,6 @@ def remove_short_tweets(df,min_words,min_len ):
 def combine_tweets_by_date(DF):
 
     print("Combining tweets by date")
-
     # Creates dictionary. Keys are the dates and the value is a list of tweets twitted on that date
     keys_dict=defaultdict(list)
     for i, doc in enumerate(DF["text"]):
@@ -146,7 +151,7 @@ def clean_data(DF):
 
 
 
-
+'''
 if __name__ == '__main__':
     df_tweets=download_tweets('2022-03-08',"$SPX")
 
@@ -158,7 +163,7 @@ if __name__ == '__main__':
     print(tweets_json)
 
 
-
+'''
 
 #df_tweets.to_csv("prueba_spx.csv",index=False)
 

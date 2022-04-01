@@ -87,14 +87,15 @@ class DirectionClassifier(nn.Module):
 
         return logits
 
-    
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print('Using {} device'.format(device))
+  
+
 
 torch.cuda.empty_cache()
 
 def load_model(path):
-
+    
     direction_model = DirectionClassifier().to(device)
     path=path
     direction_model.load_state_dict(torch.load(path))
