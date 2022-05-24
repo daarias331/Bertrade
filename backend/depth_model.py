@@ -67,10 +67,7 @@ def load_model(path):
     xgb.load_model(path)
     return xgb
 
-    
-
-
-
+'''
 if __name__ == '__main__':
     #dfcito=download_hourly_price("^GSPC","2022-03-16")
     #dfcito=ATRP(dfcito,14)
@@ -81,3 +78,4 @@ if __name__ == '__main__':
     fv = np.array(dfcito).reshape((1,-1))
     print(model.predict(fv).squeeze())
 
+'''

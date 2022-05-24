@@ -13,6 +13,14 @@ from datetime import datetime
 from datetime import timedelta
 
 
+import argparse
+parser= argparse.ArgumentParser(description='Bert Model to classify direction of price')
+parser.add_argument('-d','--date', type=str, metavar='', help='specify the date for which you want to generate the prediction in format YYYY-MM-DD')
+args = parser.parse_args()
+
+day_to_predict=args.date
+
+
 import depth_model
 import direction_model
 
@@ -111,7 +119,6 @@ def determine_predictor_date(db, date_predict_str):
     date_predict_str -- date as string in format yyyy-mm-dd corresponding to the date we want to make the prediction for
     '''
     holidays=get_holidays(db)
-    print('despues de holidays')
     days_before=1
     date_predict= datetime.strptime(date_predict_str, "%Y-%m-%d")
 
@@ -170,24 +177,19 @@ def get_true_close(ticker,day):
     adj_close_last=df.loc[day,'Adj Close']
 
     return adj_close_last
-
-
-           
+         
 
 if __name__ == '__main__':
 
     
-    predicted_date_str='2022-03-07'
+    predicted_date_str=day_to_predict
     predicted_date=datetime.strptime(predicted_date_str,"%Y-%m-%d")
     predictor_day_str, predictor_day=determine_predictor_date(db,predicted_date_str)
     print(f'Predictor date is: {predictor_day_str}')
-
     
     ## Block to predict the direction of the price
     df_tweets=pipeline.download_tweets(predictor_day_str,"$SPX")
-    print(df_tweets)
     sample=pipeline.clean_data(df_tweets)
-    print('before loading')
     model_direction=direction_model.load_model(path_bert)
     data_loader=direction_model.load_data(sample)
     direction_pred=direction_model.predict(model_direction,data_loader,direction_model.device)
@@ -205,8 +207,8 @@ if __name__ == '__main__':
     
     # Pushing the data onto the DB
     data_prediction={
-        u'predictor_date': predictor_day_str,
-        u'predicted_date_str':predictor_day,
+        u'predictor_date_str':predictor_day_str,
+        u'predictor_date': predictor_day,
         u'predicted_date_str': predicted_date_str,
         u'predicted_date': predicted_date,
         u'predicted_direction': direction_pred,
@@ -218,7 +220,7 @@ if __name__ == '__main__':
     
 
     ## Adds the actual closing price of the previous day
-    prev_ref=db.collection(u'predictions').where(u'predicted_date',u'==',predictor_day_str).get()[0] #Gets the document where we had made a predicion for previous day (predictor_day)
+    prev_ref=db.collection(u'predictions').where(u'predicted_date_str',u'==',predictor_day_str).get()[0] #Gets the document where we had made a predicion for previous day (predictor_day)
 
     db.collection(u'predictions').document(prev_ref.id).set({
         u'actual close':prev_close
