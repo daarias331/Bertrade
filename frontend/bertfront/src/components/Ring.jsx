@@ -22,9 +22,9 @@ ChartJS.register(
 
 function Ring({rate}) {
 
-    const error = rate;
+    let error = rate;
 
-    const data = {datasets: [{
+    let data = {datasets: [{
         label: 'Error rate',
         data: [error,100-error], 
         borderColor: ['rgba(255, 99, 132, 0)','rgba(255, 99, 132, 0)'],
@@ -32,9 +32,7 @@ function Ring({rate}) {
     }
 
     const chartRef = useRef(null);
-    const [chartData, setChartData] = useState({
-      datasets: [],
-    });
+    const [chartData, setChartData] = useState(data);
 
     const createGradient = (ctx, area, color1, color2, color3) => {
         const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);

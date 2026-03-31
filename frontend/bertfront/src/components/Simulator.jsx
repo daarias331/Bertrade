@@ -7,7 +7,7 @@ import LinePredict from './LinePredict';
 import AccumProfit from './AccumProfit';
 import InputAdornment from '@mui/material/InputAdornment';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, query, orderBy, limit } from 'firebase/firestore/lite';
 import key_bertrade from '../key_bertrade.json';
 
 // import { } from 'firebase/<service>';
@@ -34,24 +34,34 @@ function Simulator() {
     const handleCredits = () => {
         nav("/howitworks");
     }
+    //const todays = db.collection('predictions').limit(1);
+    //console.log(todays);
 
-    const handleTopData = () => {
+    const handleTopData = async () => {
         try {
-            const todays = db.collection('predictions').where("","","");
-            //const top = await queryfirebase();
-            //setActual(top.actual);
-            //setPredicted(top.predicted);
-            //setError(top.error);
+            const predictions = collection(db, 'predictions');
+            const q = query(predictions, orderBy("predicted_date", "desc"), limit(2))
+            const todays = await getDocs(q);
+            console.log(todays);
+            const td_pred = todays._docs[1]._document.data.value.mapValue.fields.predicted_price.doubleValue;
+            const td_actual = todays._docs[1]._document.data.value.mapValue.fields["actual close"].doubleValue;
+            const rate_e = Math.round((Math.abs(td_actual - td_pred)/Math.abs(td_actual))*100)/100;
+            
+            setPredicted(Math.round(td_pred));
+            setActual(Math.round(td_actual));
+            setError(rate_e);
         } catch(error){
-
+            console.log(error)
         } finally {
 
         }
     }
 
     const handleQuery = async () => {
-        console.log(initAmount, initDate);
+        
         const query = `${initAmount} ${initDate}`;
+        console.log(query);
+        handleTopData();
         try {
             //const data = await firebase(query);
             //setNetProfit(data.profit.sum());
@@ -101,13 +111,12 @@ function Simulator() {
                     
                     <Box sx={{width: 140, height: 140, position: "relative"}}> 
                         <Typography variant="h5" sx={{color: 'secondary.text', fontWeight: 'bold',
-                         position: "absolute", left: "75%", top: "45%", zIndex: "3"}}>
+                         position: "absolute", left: "70%", top: "45%", zIndex: "3"}}>
                             {error}%
                         </Typography>
-                        <Ring rate={error}/>
-                        
+                        <Ring rate={error}/>    
                     </Box>
-                    <Typography sx={{color: 'secondary.text', frontWeight: 'bold'}}>
+                    <Typography sx={{color: 'secondary.text', frontWeight: 'bold', position: 'absolute'}}>
                         Error rate
                     </Typography>
                     
